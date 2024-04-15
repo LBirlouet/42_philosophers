@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:00:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/15 14:29:16 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:45:13 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	init_data(t_data *data, int ac, char **av)
 {
 	(void)ac;
 
+	data->ready = 0;
 	data->time_start = get_time_ms();
 	data->nb_philo = mini_atoi(av[1]);
 	data->time_to_die = mini_atoi(av[2]);

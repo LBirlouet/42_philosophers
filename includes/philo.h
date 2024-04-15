@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:34:46 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/15 14:26:11 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:45:04 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@
 
 typedef struct s_philos{
 	pthread_t	thread_philo;
-	pthread_mutex_t	mutex_philo;
+	pthread_mutex_t	mutex_fork;
 	int i;
 	int	s_death;
 }	t_philos;
 
 typedef struct s_data{
+	int			ready;
 	int			nb_philo;
 	int			nb_time_philo_eat;
 	u_int64_t	time_to_die;

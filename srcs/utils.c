@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:48:25 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/15 14:28:55 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:04:40 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	my_sleep(t_data *data, uint64_t time)
 	t = get_time_ms();
 	while (t < data->time_start + time)
 	{
+		// printf("WAAAAIT\n");
 		t = get_time_ms();
 	}
 	return ;
