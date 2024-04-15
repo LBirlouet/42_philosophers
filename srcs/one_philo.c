@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   one_philo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/11 15:37:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/15 14:51:59 by lbirloue         ###   ########.fr       */
+/*   Created: 2024/04/15 14:18:10 by lbirloue          #+#    #+#             */
+/*   Updated: 2024/04/15 14:43:18 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h" 
 
-int	more_phil(t_data *data)
+void	*one_philo_r(void *data)
 {
-	printf("nb philos = %d\n", data->nb_philo);
-	return (0);
+	t_data	*cpdata = (t_data *)data;
+	printf("PHILO\n");
+	print_fork(cpdata, 1);
+	printf("%llu\n", cpdata->time_to_die);
+	my_sleep(cpdata, cpdata->time_to_die);
+	print_death(cpdata, 1);
+	return 0;
 }
 
-int	main(int ac, char **av)
+int	one_phil(t_data *data)
 {
-	t_data	data;
-
-	if (verif_data(ac,av)|| init_data(&data, ac, av))
-		return (printf(error_0), 1);
-	printf("good data\n");
-	if (data.nb_philo == 1)
-		return (one_phil(&data));
-	else
-		return (more_phil(&data));
-	return (0);
+	pthread_create(&data->philos[0].thread_philo, NULL, &one_philo_r, data);
+	pthread_join(data->philos[0].thread_philo, NULL);
+	free(data->philos);
+	return 0;
 }

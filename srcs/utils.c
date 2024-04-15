@@ -6,18 +6,36 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:48:25 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/12 07:54:27 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:28:55 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// int ft_atoi(char *str)
-// {
-    
-// }
-int	mini_atoi(char *str)
+#include "../includes/philo.h" 
+
+u_int64_t	get_time_ms(void)
+{
+	struct timeval	tv;
+	
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	my_sleep(t_data *data, uint64_t time)
+{
+	u_int64_t	t;
+
+	t = get_time_ms();
+	while (t < data->time_start + time)
+	{
+		t = get_time_ms();
+	}
+	return ;
+}
+
+long long	mini_atoi(char *str)
 {
 	long long	ret;
-	int	i;
+	long long	i;
 
 	ret = 0;
 	i = 0;
@@ -26,9 +44,7 @@ int	mini_atoi(char *str)
 		ret = (ret * 10) + (str[i] - 48);
 		i++;
 	}
-	if (ret > __INT_MAX__)
-		return (-1);
-	return ((int)ret);
+	return (ret);
 }
 
 int	ft_strlen(char *str)

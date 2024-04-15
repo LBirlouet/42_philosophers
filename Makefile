@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/12 08:01:51 by lbirloue          #+#    #+#              #
-#    Updated: 2024/04/12 08:05:38 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/04/15 14:25:35 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ INCLUDES		=	includes/pipex.h
 SRCS			=	srcs/main.c \
 					srcs/init.c \
 					srcs/utils.c \
+					srcs/print.c \
+					srcs/one_philo.c \
 					
 					
 OBJ_DIR			=	objects
