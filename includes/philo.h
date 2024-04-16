@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:34:46 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/15 15:45:04 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/16 13:10:11 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,40 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <string.h>
+# include <stdbool.h>
 
 # define error_0 "./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> [number_of_times_each_philo_must_eat]\n"
 
 
+
+//STATUS
+// 1 EATING
+// 2 SLEEPING
+// 3 THINKING
+// 4 DEAD
 typedef struct s_philos{
 	pthread_t	thread_philo;
-	pthread_mutex_t	mutex_fork;
-	int i;
-	int	s_death;
+	pthread_mutex_t	locked;
+	pthread_mutex_t	left_f;
+	pthread_mutex_t	right_f;
+	int nb_eat;
+	u_int64_t last_eat_time;
+	int status;
+	
 }	t_philos;
 
 typedef struct s_data{
 	int			ready;
 	int			nb_philo;
 	int			nb_time_philo_eat;
+	bool		finish;
 	u_int64_t	time_to_die;
 	u_int64_t	time_to_eat;
 	u_int64_t	time_to_sleep;
 	t_philos	*philos;
 	u_int64_t	time_start;
+
+	int tempo;
 
 }	t_data;
 

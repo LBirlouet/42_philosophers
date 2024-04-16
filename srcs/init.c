@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:00:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/15 15:45:13 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/16 13:11:05 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	init_data(t_data *data, int ac, char **av)
 	(void)ac;
 
 	data->ready = 0;
+	data->finish = false ;
 	data->time_start = get_time_ms();
 	data->nb_philo = mini_atoi(av[1]);
 	data->time_to_die = mini_atoi(av[2]);
@@ -57,7 +58,9 @@ int	init_data(t_data *data, int ac, char **av)
 	
 	while (i < data->nb_philo)
 	{
-		data->philos[i].s_death = 0;
+		data->philos[i].last_eat_time = get_time_ms();
+		// printf("%llu\n", data->philos[i].last_eat_time);
+		data->philos[i].status = 0;
 		i++;
 	}
 	return (0);
