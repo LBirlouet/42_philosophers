@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:34:46 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/16 13:10:11 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:24:50 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,14 @@
 // 2 SLEEPING
 // 3 THINKING
 // 4 DEAD
-typedef struct s_philos{
-	pthread_t	thread_philo;
-	pthread_mutex_t	locked;
-	pthread_mutex_t	left_f;
-	pthread_mutex_t	right_f;
-	int nb_eat;
-	u_int64_t last_eat_time;
-	int status;
-	
-}	t_philos;
 
 typedef struct s_data{
 	int			ready;
 	int			nb_philo;
 	int			nb_time_philo_eat;
 	bool		finish;
+	int			death;
+	int			index;
 	u_int64_t	time_to_die;
 	u_int64_t	time_to_eat;
 	u_int64_t	time_to_sleep;
@@ -57,6 +49,18 @@ typedef struct s_data{
 	int tempo;
 
 }	t_data;
+
+typedef struct s_philos{
+	int id;
+	pthread_t	thread_philo;
+	pthread_mutex_t	locked;
+	pthread_mutex_t	left_f;
+	pthread_mutex_t	right_f;
+	int nb_eat;
+	u_int64_t last_eat_time;
+	int status;
+	t_data data;
+}	t_philos;
 
 //FONCITONS
 //UTILS
@@ -74,6 +78,7 @@ int	init_data(t_data *data, int ac, char **av);
 void	print_eat(t_data *data, int wich_philo);
 void	print_fork(t_data *data, int wich_philo);
 void	print_death(t_data *data, int wich_philo);
+void	print_sleep(t_data *data, int wich_philo); 
 
 //ONE_PHILO
 int	one_phil(t_data *data);

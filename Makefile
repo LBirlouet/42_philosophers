@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/12 08:01:51 by lbirloue          #+#    #+#              #
-#    Updated: 2024/04/15 14:25:35 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/04/17 13:14:32 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME			=	philosophers
 
 CC				=	gcc
 
-CFLAGS			=	-Wall -Wextra -Werror
+CFLAGS			=	#-Wall -Wextra -Werror
 
 INCLUDES		=	includes/pipex.h
 

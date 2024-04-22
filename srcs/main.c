@@ -6,61 +6,34 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:37:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/16 13:13:38 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:22:08 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h" 
+#include "../includes/philo.h"
 
-bool check_finish(t_data *data)
+void	*check_routine(void *data)
 {
-	if (data->finish == true)
-		return (true);
-	return (false);
+	t_data *cpdata = (t_data*)data;
+
+	return 0;
 }
 
-void	check_last_eat(t_data *data, int i)
+void	*philo(void *data)
 {
-	u_int64_t act_time = get_time_ms();
+	t_philos *philo = (t_philos*)data;
 
-	// printf("%llu - %llu > %llu\n", act_time, data->philos[i].last_eat_time, data->time_to_die);
-	if ((act_time - data->philos[i].last_eat_time) > data->time_to_die)
-	{
-		data->philos[i].status = 4;
-		print_death(data, i);
-		data->finish = true;
-	}
-	return ;
-}
-
-void	*more_philos_r(void *data)
-{
-	int i = 0;;
-	t_data	*cpdata = (t_data *)data;
-	if (cpdata->ready == 1)
-	{
-		while (check_finish(data) == false)
-		{
-			if (i == cpdata->nb_philo)
-			{
-				// cpdata->finish = true;
-				i = 0;
-			}
-			pthread_mutex_lock(&cpdata->philos[i].locked);
-			printf("wi\n");
-			check_last_eat(cpdata, i);
-			pthread_mutex_unlock(&cpdata->philos[i].locked);
-			i++;
-		}
-	}
+	printf("||%d||\n", philo->id);
+	printf("%llu\n", philo->data.time_start);
 	return 0;
 }
 
 
-int	more_phil(t_data *data)
+int	start_phil(t_data *data)
 {
 	data->tempo = 0;
-	printf("nb philos = %d\n", data->nb_philo);
+	data->index = 0;
+	// printf("nb philos = %d\n", data->nb_philo);
 	int	i;
 
 	i = 0;
@@ -74,15 +47,10 @@ int	more_phil(t_data *data)
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		// int w = 1;
-		pthread_create(&data->philos[i].thread_philo, NULL, &more_philos_r, data);
-		if (i + 1 == data->nb_philo)
-		{
-		data->tempo = 9;
-			data->ready = 1;
-		}
+		pthread_create(&data->philos[i].thread_philo, NULL, &philo, &data->philos[i]);
 		i++;
 	}
+	pthread_create(&data->philos[i].thread_philo, NULL, &check_routine, data);
 
 
 	
@@ -113,6 +81,6 @@ int	main(int ac, char **av)
 	if (data.nb_philo == 1)
 		return (one_phil(&data));
 	else
-		return (more_phil(&data));
+		return (start_phil(&data));
 	return (0);
 }
