@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:37:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/23 12:59:41 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/23 13:17:20 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	*routine(void *phil)
 		my_sleep(data, 10);
 	while (data->death == 0 || data->eat_max == 0)
 	{
-printf("ho\n");
 		pthread_mutex_lock(&data->fork[philo->left_f]);
+printf("ho\n");
 		print(data, philo->id, "as taking a fork");
 		pthread_mutex_lock(&data->fork[philo->right_f]);
 		print(data, philo->id, "as taking a fork");
