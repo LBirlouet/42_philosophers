@@ -6,13 +6,13 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:48:25 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/22 11:13:43 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:32:34 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h" 
 
-u_int64_t	get_time_ms(void)
+time_t	get_time_ms(void)
 {
 	struct timeval	tv;
 	
@@ -20,16 +20,24 @@ u_int64_t	get_time_ms(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	my_sleep(t_data *data, uint64_t time)
+void	my_sleep(t_data *data, time_t time)
 {
-	u_int64_t	t;
-	u_int64_t	act_t;
+	// time_t	act_t;
+	time_t	final;
+
 (void)data;
-	act_t = get_time_ms();
-	t = get_time_ms();
-	while (t < act_t + time)
+	// act_t = get_time_ms();
+	final = get_time_ms() + time;
+	// t = get_time_ms();
+	// while (t < act_t + time)
+	// {
+	// 	t = get_time_ms();
+	// }
+	while (1)
 	{
-		t = get_time_ms();
+		if (get_time_ms() >= final)
+			break;
+		usleep(200);
 	}
 	return ;
 }

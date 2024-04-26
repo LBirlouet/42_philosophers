@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ndessard <ndessard@student.s19.be>         +#+  +:+       +#+        */
+/*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 13:11:53 by ndessard          #+#    #+#             */
-/*   Updated: 2024/04/19 15:39:15 by ndessard         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:16:20 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	*routine(void *phil)
 	philo = (t_philo *)phil;
 	data = philo->data;
 	philo->last_eat = data->start_time;
+	printf("test |||%d %d %d\n", philo->id,philo->left_fork, philo->right_fork);
+
 	if (philo->id % 2 == 0)
 		ft_sleep(data, 10);
 	while (data->dead != 1 || data->eat_en >= data->nb_philo)

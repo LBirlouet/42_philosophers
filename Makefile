@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/12 08:01:51 by lbirloue          #+#    #+#              #
-#    Updated: 2024/04/23 13:16:10 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/04/26 10:57:08 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME			=	philosophers
 
 CC				=	gcc
 
-CLAGS		= -Wall -Wextra -Werror -pthread -g -finline-functions -fvectorize -fslp-vectorize -ffast-math -falign-functions -funroll-loops -fstrict-aliasing -fomit-frame-pointer -flto -Ofast -O1 -O2 -Os -O3
+CFLAGS			=	-Wall -Wextra -Werror -pthread -g -finline-functions -fvectorize -fslp-vectorize -ffast-math -falign-functions -funroll-loops -fstrict-aliasing -fomit-frame-pointer -flto -Ofast -O1 -O2 -Os -O3
 
 INCLUDES		=	includes/pipex.h
 

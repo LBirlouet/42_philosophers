@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:34:46 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/23 12:58:40 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:30:19 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,25 @@ typedef struct s_philos{
 	int	left_f;
 	int right_f;
 	pthread_t	thread_philo;
-	u_int64_t last_eat_time;
+	time_t last_eat_time;
 	struct s_data *data;
 }	t_philos;
 
 typedef struct s_data{
-	int			ready;
 	int			nb_philo;
 	int			nb_time_philo_eat;
-	bool		finish;
 	int			death;
-	int			index;
 	int			eat_max;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	mutex_msg;
-	u_int64_t	time_to_die;
-	u_int64_t	time_to_eat;
-	u_int64_t	time_to_sleep;
+
+	pthread_mutex_t	mutex_death;
+
+	time_t	time_to_die;
+	time_t	time_to_eat;
+	time_t	time_to_sleep;
 	t_philos	*philos;
-	u_int64_t	time_start;
-
-	int tempo;
-
+	time_t	time_start;
 }	t_data;
 
 
@@ -73,8 +70,8 @@ typedef struct s_data{
 int	ft_strlen(char *str);
 int	ft_is_nb(char c);
 long long	mini_atoi(char *str);
-u_int64_t	get_time_ms(void);
-void	my_sleep(t_data *data, uint64_t time);
+time_t	get_time_ms(void);
+void	my_sleep(t_data *data, time_t time);
 
 //INIT
 int	verif_data(int ac, char **av);
