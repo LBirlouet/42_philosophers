@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:18:10 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/26 12:44:54 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:00:26 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 void	*one_philo_r(void *data)
 {
 	t_data	*cpdata = (t_data *)data;
-	printf("PHILO\n");
 	//lock fork
 	print(data, 1, "as taking a fork");
-	printf("%ldu\n", cpdata->time_to_die);
 	//lock fork
 	my_sleep(cpdata, cpdata->time_to_die);
 	

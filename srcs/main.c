@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:37:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/26 13:25:17 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:55:21 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,47 @@ void	*routine(void *phil)
 
 	if (philo->id % 2 == 0)
 		my_sleep(data, 15);
-	while (data->death == 0 || data->eat_max == 0)
+	while (data->death == 0 && data->eat_max < data->nb_philo)
 	{
 		pthread_mutex_lock(&data->fork[philo->left_f]);
-		print(data, philo->id, "as taking a fork");
+		print(data, philo->id, "\033[0;32;5;32mas taking a fork\033[0m");
 		pthread_mutex_lock(&data->fork[philo->right_f]);
-		print(data, philo->id, "as taking a fork");
-		print(data, philo->id, "is eating");
+		print(data, philo->id, "\033[0;32;5;32mas taking a fork\033[0m");
+		print(data, philo->id, "\033[0;38;5;39;3mis eating\033[0m");
+			
 		data->philos[philo->id - 1].last_eat_time = get_time_ms();
 		// printf("|||||||||%llu||||||||||| (philo : %d)\n",data->philos[philo->id].last_eat_time,philo->id );
-		data->philos[philo->id - 1].nb_eat++;
 		my_sleep(data, data->time_to_eat);
+		data->philos[philo->id - 1].nb_eat++;
+		if (data->philos[philo->id - 1].nb_eat == data->nb_time_philo_eat)
+			data->eat_max++;
 		pthread_mutex_unlock(&data->fork[philo->left_f]);
 		pthread_mutex_unlock(&data->fork[philo->right_f]);
-		/**/
-		/*sleep*/
-		print(data, philo->id, "is sleeping");
+		// if (data->eat_max == data->nb_philo)
+		// {
+		// 	// printf("max eat\n");
+		// 	return (0);
+		// }
+		if (data->death == 0) //decortiquer et mettre plusieurs fois
+		{
+		print(data, philo->id, "\033[0;38;5;219mis sleeping\033[0m");
 		my_sleep(data, data->time_to_sleep);
-		/**/
-		print(data, philo->id, "is thinking");
+		print(data, philo->id, "\033[0;38;5;226mis thinking\033[0m");
+		}
 	}
 	return 0;
+}
+
+int	destroy_mutex_init(t_data *data, int i)
+{
+	pthread_mutex_destroy(&data->mutex_msg);
+	pthread_mutex_destroy(&data->mutex_death);
+	while (i >= 0)
+	{
+		pthread_mutex_destroy(&data->fork[i]);
+		i--;
+	}
+	return (-1);
 }
 
 int	mutex_init(t_data *data)
@@ -54,28 +74,22 @@ int	mutex_init(t_data *data)
 	data->fork = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
 	if (!data->philos)
 		return (-1);
-	pthread_mutex_init(&data->mutex_msg, NULL); //a verif
-	pthread_mutex_init(&data->mutex_death, NULL); //a verif
+	if (pthread_mutex_init(&data->mutex_msg, NULL))
+		return (-1);
+	if (pthread_mutex_init(&data->mutex_death, NULL))
+	{
+		pthread_mutex_destroy(&data->mutex_msg);
+		return (-1);
+	}
 	while (i < data->nb_philo)
 	{
-		pthread_mutex_init(&data->fork[i], NULL); //a verif
+		if (pthread_mutex_init(&data->fork[i], NULL))
+			return (destroy_mutex_init(data, i));
 		i++;
 	}
 	return (0);
 }
 
-int	join(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		pthread_join(data->philos[i].thread_philo, NULL);
-		i++;
-	}
-	return (0);
-}
 
 int	destroy_all(t_data *data)
 {
@@ -99,6 +113,47 @@ int	free_all(t_data *data)
 	return (0);
 }
 
+int	check_death(t_data *data)
+{
+	time_t	time;
+	int		i;
+
+	while (data->death == 0 || data->eat_max < data->nb_philo)
+	{
+		i = 0;
+		while (i < data->nb_philo)
+		{
+			if (data->eat_max == data->nb_philo)
+				return (0);
+			if (get_time_ms() - data->philos[i].last_eat_time > data->time_to_die)
+			{
+				pthread_mutex_lock(&data->mutex_death);
+				time = get_time_ms() - data->time_start;
+				print(data, i + 1, "\033[1;38;5;210mdied\033[0m");
+				//printf("[%ld] [%d] %s\n", time, i + 1, "\033[1;38;5;210mdied\033[0m");
+				data->death = 1;
+				pthread_mutex_unlock(&data->mutex_death);
+				return (0);
+			}
+			i++;
+		}
+	}
+	return (0);
+}
+
+int	join(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		pthread_join(data->philos[i].thread_philo, NULL);
+		i++;
+	}
+	return (0);
+}
+
 int	start_phil(t_data *data)
 {
 	int	i;
@@ -110,34 +165,19 @@ int	start_phil(t_data *data)
 	while (i < data->nb_philo)
 	{
 		if (pthread_create(&data->philos[i].thread_philo, NULL,
-				&routine, (void *)&data->philos[i])  == -1)
+				&routine, (void *)&data->philos[i]) == -1)
 		{
-			//destroy mutex;
+			free_all(data);
+			destroy_all(data);
 			return (-1);
 		}
 		i++;
 	}
 	my_sleep(data, 10);
-	while (data->death == 0 || data->eat_max == 0)
-	{
-		i = 0;
-		while (i < data->nb_philo)
-		{
-			// printf("philo[%d] => %llu\n",i, data->philos[i].last_eat_time);
-			// printf("%lu > %lu\n", data->philos[i].last_eat_time, data->time_to_die);
-			if (get_time_ms() - data->philos[i].last_eat_time > data->time_to_die)
-			{
-				// printf("dead\n");
-				pthread_mutex_lock(&data->mutex_msg);
-				print(data, i + 1, "IS DEEEEEEEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD\n\n");
-				data->death = 1;
-				pthread_mutex_unlock(&data->mutex_msg);
-				return (0);
-			}
-			i++;
-		}
-	}
+	check_death(data);
 	join(data);
+	destroy_all(data);
+	free_all(data);
 	return (0);
 }
 
@@ -147,12 +187,9 @@ int	main(int ac, char **av)
 
 	if (verif_data(ac,av)|| init_data(&data, ac, av))
 		return (printf(error_0), 1);
-	printf("good data\n");
 	if (data.nb_philo == 1)
 		return (one_phil(&data));
 	else
 		return (start_phil(&data));
-	free_all(&data);
-	destroy_all(&data);
 	return (0);
 }

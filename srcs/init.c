@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:00:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/26 12:19:46 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:01:57 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	init_data(t_data *data, int ac, char **av)
 	if (data->nb_philo > INT_MAX || data->time_to_die > INT_MAX ||
 		data->time_to_eat > INT_MAX || data->time_to_sleep > INT_MAX ||
 		data->nb_time_philo_eat > INT_MAX || data->nb_philo == 0 ||
-		data->nb_philo > 200)
+		data->nb_philo > 200 || data->nb_time_philo_eat == 0)
 		return (-1);
 
 	data->philos = malloc(sizeof(t_philos) * data->nb_philo);

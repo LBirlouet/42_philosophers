@@ -6,11 +6,11 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/12 08:01:51 by lbirloue          #+#    #+#              #
-#    Updated: 2024/04/26 10:57:08 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/04/26 13:35:52 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	philosophers
+NAME			=	philo
 
 CC				=	gcc
 
