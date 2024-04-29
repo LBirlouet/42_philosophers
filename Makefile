@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/12 08:01:51 by lbirloue          #+#    #+#              #
-#    Updated: 2024/04/26 13:35:52 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/04/29 11:18:11 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCS			=	srcs/main.c \
 					srcs/utils.c \
 					srcs/print.c \
 					srcs/one_philo.c \
+					srcs/final.c \
 					
 					
 OBJ_DIR			=	objects

@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:48:25 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/26 14:48:27 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:29:16 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,20 @@
 time_t	get_time_ms(void)
 {
 	struct timeval	tv;
-	
+
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 void	my_sleep(t_data *data, time_t time)
 {
-	// time_t	act_t;
 	time_t	final;
 
-(void)data;
 	final = get_time_ms() + time;
 	while (1)
 	{
 		if (get_time_ms() >= final)
-			break;
+			break ;
 		usleep(2 * data->nb_philo);
 	}
 	return ;

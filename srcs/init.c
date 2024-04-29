@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:00:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/26 14:01:57 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:36:49 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	verif_data(int ac, char **av)
 
 	i = 1;
 	if (ac != 5 && ac != 6)
-		return -1;
+		return (-1);
 	while (i < ac)
 	{
 		j = -1;
@@ -31,9 +31,55 @@ int	verif_data(int ac, char **av)
 	return (0);
 }
 
-int	init_data(t_data *data, int ac, char **av)
+int	mutex_init(t_data *data)
 {
-	(void)ac;
+	int	i;
+
+	i = 0;
+	data->fork = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
+	if (!data->philos)
+		return (-1);
+	if (pthread_mutex_init(&data->mutex_msg, NULL))
+		return (-1);
+	if (pthread_mutex_init(&data->mutex_death, NULL))
+	{
+		pthread_mutex_destroy(&data->mutex_msg);
+		return (-1);
+	}
+	while (i < data->nb_philo)
+	{
+		if (pthread_mutex_init(&data->fork[i], NULL))
+			return (destroy_mutex_init(data, i));
+		i++;
+	}
+	return (0);
+}
+
+int	init_data2(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->philos = malloc(sizeof(t_philos) * data->nb_philo);
+	if (!data->philos)
+		return (-1);
+	while (i < data->nb_philo)
+	{
+		data->philos[i].data = data;
+		data->philos[i].last_eat_time = get_time_ms();
+		data->philos[i].status = 0;
+		data->philos[i].id = i + 1;
+		data->philos[i].left_f = i;
+		data->philos[i].right_f = i + 1;
+		if (i + 1 == data->nb_philo)
+			data->philos[i].right_f = 0;
+		i++;
+	}
+	return (0);
+}
+
+int	init_data(t_data *data, char **av)
+{
 	int	i;
 
 	i = 0;
@@ -44,36 +90,14 @@ int	init_data(t_data *data, int ac, char **av)
 	data->time_to_die = mini_atoi(av[2]);
 	data->time_to_eat = mini_atoi(av[3]);
 	data->time_to_sleep = mini_atoi(av[4]);
-	
 	if (av[5])
 		data->nb_time_philo_eat = mini_atoi(av[5]);
 	else
 		data->nb_time_philo_eat = -2;
-	if (data->nb_philo > INT_MAX || data->time_to_die > INT_MAX ||
-		data->time_to_eat > INT_MAX || data->time_to_sleep > INT_MAX ||
-		data->nb_time_philo_eat > INT_MAX || data->nb_philo == 0 ||
-		data->nb_philo > 200 || data->nb_time_philo_eat == 0)
+	if (data->nb_philo > INT_MAX || data->time_to_die > INT_MAX
+		|| data->time_to_eat > INT_MAX || data->time_to_sleep > INT_MAX
+		|| data->nb_time_philo_eat > INT_MAX || data->nb_philo == 0
+		|| data->nb_philo > 200 || data->nb_time_philo_eat == 0)
 		return (-1);
-
-	data->philos = malloc(sizeof(t_philos) * data->nb_philo);
-	if (!data->philos)
-		return -1;
-
-	
-	while (i < data->nb_philo)
-	{
-		data->philos[i].data = data;
-		data->philos[i].last_eat_time = get_time_ms();
-		// printf("%llu\n", data->philos[i].last_eat_time);
-		data->philos[i].status = 0;
-		data->philos[i].id = i + 1;
-		data->philos[i].left_f = i;
-		data->philos[i].right_f = i + 1;
-		if (i + 1 == data->nb_philo)
-			data->philos[i].right_f = 0;
-			
-		// printf("|%d|\n", data->philos[i].id);
-		i++;
-	}
-	return (0);
+	return (init_data2(data));
 }
