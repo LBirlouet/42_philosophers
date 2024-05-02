@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:34:46 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/29 12:45:18 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/05/02 10:33:18 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <stdbool.h>
 
 # define ERROR "invalid arguments\n"
-# define TAKE_FORK "\033[0;32;5;32mis taking a fork\033[0m"
+# define TAKE_FORK "\033[0;32;5;32mhas taken a fork\033[0m"
 # define EATING "\033[0;38;5;39;3mis eating\033[0m"
 # define THINKING "\033[0;38;5;226mis thinking\033[0m"
 # define SLEEPING "\033[0;38;5;219mis sleeping\033[0m"
