@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:37:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/29 12:41:05 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:19:22 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int	philosophers(t_data *data)
 		if (pthread_create(&data->philos[i].thread_philo, NULL,
 				&routine, (void *)&data->philos[i]) == -1)
 		{
-			free_all(data);
 			destroy_all(data);
+			free_all(data);
 			return (-1);
 		}
 		i++;
@@ -115,6 +115,7 @@ int	main(int ac, char **av)
 		printf(ERROR);
 		return (1);
 	}
+	data.time_start = get_time_ms();
 	if (data.nb_philo == 1)
 		return (one_phil(&data));
 	else

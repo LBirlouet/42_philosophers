@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:48:25 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/29 12:29:16 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/05/06 11:07:11 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ void	my_sleep(t_data *data, time_t time)
 {
 	time_t	final;
 
+	(void)data;
 	final = get_time_ms() + time;
 	while (1)
 	{
 		if (get_time_ms() >= final)
 			break ;
-		usleep(2 * data->nb_philo);
+		usleep(200);
 	}
 	return ;
 }

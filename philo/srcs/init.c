@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:00:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/04/29 12:36:49 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:56:11 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int	verif_data(int ac, char **av)
 				return (1);
 		i++;
 	}
+	if (ft_strlen(av[1]) > 10 || ft_strlen(av[2]) > 10
+		|| ft_strlen(av[3]) > 10 || ft_strlen(av[4]) > 10)
+		return (1);
 	return (0);
 }
 
@@ -85,7 +88,6 @@ int	init_data(t_data *data, char **av)
 	i = 0;
 	data->death = 0;
 	data->eat_max = 0;
-	data->time_start = get_time_ms();
 	data->nb_philo = mini_atoi(av[1]);
 	data->time_to_die = mini_atoi(av[2]);
 	data->time_to_eat = mini_atoi(av[3]);
