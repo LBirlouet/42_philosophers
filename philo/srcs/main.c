@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:37:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/05/06 10:19:22 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:49:22 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*routine(void *phil)
 	philo = (t_philos *)phil;
 	data = philo->data;
 	if (philo->id % 2 == 0)
-		my_sleep(data, 15);
+		my_sleep(data, 10);
 	while (data->death == 0 && data->eat_max < data->nb_philo)
 	{
 		eat(data, philo);
@@ -53,25 +53,28 @@ void	*routine(void *phil)
 
 int	check_death(t_data *data)
 {
-	int	i;
+	int		i;
+	time_t	time;
 
 	while (data->death == 0 || data->eat_max < data->nb_philo)
 	{
-		i = 0;
-		while (i < data->nb_philo)
+		i = -1;
+		while (++i < data->nb_philo)
 		{
 			if (data->eat_max == data->nb_philo)
 				return (0);
 			if (get_time_ms() - data->philos[i].last_eat_time
 				> data->time_to_die)
 			{
+				pthread_mutex_lock(&data->mutex_msg);
 				pthread_mutex_lock(&data->mutex_death);
-				print(data, i + 1, DIED);
+				time = get_time_ms() - data->time_start;
+				printf("[%ld] [%d] %s\n", time, i + 1, DIED);
 				data->death = 1;
 				pthread_mutex_unlock(&data->mutex_death);
+				pthread_mutex_unlock(&data->mutex_msg);
 				return (0);
 			}
-			i++;
 		}
 	}
 	return (0);
